@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+# Server
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+run the following cmd:
 
-## Available Scripts
+```
+cd server
+npm i
+node app.js
+export MONGO_URI=mongodb+srv://this_is_mjk:Manas@iitkanpur.vmjoa.mongodb.net/myDB
+// this role is the editer and viewer role
+```
 
-In the project directory, you can run:
+this will start the server
 
-### `npm start`
+## Server components
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Worker
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. It runs in the interval of 1m, fetches data from `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=${interval}&range=${range}` -- found from `https://stackoverflow.com/a/46319960/23078987`
+2. First fetches data with the help of `fetchStockData(symbol, interval, range)` function
+3. Followed by `saveStockData(symbol, stockData)` which saves the data in the document of respective folder in the database.
+4. The worker takes care of only adding the entries whihc are recently added, it dont addes again if the entry exist also it dicards entries with the null values.
 
-### `npm test`
+### API end points
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Fetch Stock Data for a Specific Day and stock
 
-### `npm run build`
+1. Endpoint: GET /stock/:symbol/:date
+2. Params:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+symbol: Stock symbol (e.g., lauruslabs.ns)
+date: Date in YYYY-MM-DD format (e.g., 2024-09-13)
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Example Request:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+GET /stock/lauruslabs.ns/2024-09-13
+Response:
+Returns stock data for the specified day.
+```
 
-### `npm run eject`
+#### Fetch Latest Stock Data Entry
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Endpoint: GET `/stock/:symbol`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Params:
+   `symbol: Stock symbol (e.g., lauruslabs.ns)`
+3. Example Request:
+   ```
+   GET /stock/lauruslabs.ns
+   Response:
+   Returns the latest stock data entry for the specified symbol.
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Fetch All Stock Data
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Endpoint: GET `/stocks`
 
-## Learn More
+2. Example Request:
+   ```
+   GET /stocks
+   Response:
+   Returns all stock data available in the database, grouped by stock symbol.
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Error Handling
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+404 Not Found: If no data is found for a request.
+500 Internal Server Error: For unexpected server errors.
+```
 
-### Code Splitting
+# Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+run
+`npm start`
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Runs the app in the development mode.

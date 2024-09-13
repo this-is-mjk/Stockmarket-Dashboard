@@ -8,7 +8,7 @@ const connectDB = require("./database/connectDB");
 connectDB();
 // start the worker
 Worker = require("./worker/fetchData");
-// Worker();
+Worker();
 
 fetchAllStockData = require("./controllers/allData");
 fetchLatestStockData = require("./controllers/latestStockData");
