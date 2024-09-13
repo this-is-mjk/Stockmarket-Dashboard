@@ -4,10 +4,6 @@
 const axios = require("axios");
 const cron = require("node-cron");
 const getStockModel = require("../database/models/stockData");
-const connectDB = require("../database/connectDb");
-
-// connect to mongoDb
-connectDB();
 
 const fetchStockData = async (symbol, interval, range) => {
   try {
