@@ -3,11 +3,12 @@
 run the following cmd:
 
 ```
+export MONGO_URI=mongodb+srv://this_is_mjk:Manas@iitkanpur.vmjoa.mongodb.net/myDB
+// this role is the editer and viewer role
 cd server
 npm i
 node app.js
-export MONGO_URI=mongodb+srv://this_is_mjk:Manas@iitkanpur.vmjoa.mongodb.net/myDB
-// this role is the editer and viewer role
+
 ```
 
 this will start the server
